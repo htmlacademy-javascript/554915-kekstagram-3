@@ -1,7 +1,7 @@
 import { RENDER_POSITION } from './util';
 
 const modal = document.querySelector('.big-picture');
-const photoimage = modal.querySelector('.big-picture__img img');
+const photoImage = modal.querySelector('.big-picture__img img');
 const photoDescription = modal.querySelector('.social__caption');
 const likesCount = modal.querySelector('.likes-count');
 
@@ -48,23 +48,23 @@ const showCommentsCountPanel = () => {
 };
 
 const fillFullPhoto = ({url, likes, description, comments}) => {
-  photoimage.src = url;
-  photoimage.alt = description;
+  photoImage.src = url;
+  photoImage.alt = description;
   photoDescription.textContent = description;
   likesCount.textContent = likes;
   commentsCountTotal.textContent = getCommentsCount(comments);
 
   hideCommentsCountPanel();
 
-  renderComments();
+  renderComments(comments);
 };
 
 const clearFullPhoto = () => {
   commentsCount.classList.add('hidden');
   loadMoreButton.classList.add('hidden');
 
-  photoimage.src = '';
-  photoimage.alt = '';
+  photoImage.src = '';
+  photoImage.alt = '';
   photoDescription.textContent = '';
   likesCount.textContent = '';
   commentsCountTotal.textContent = '';
