@@ -87,13 +87,12 @@ const uploadFormSubmit = (evt, onSuccess) => {
       () => {
         onSuccess();
         showAlert(ALERT_TYPE.SUCCESS, EVENT_FLOW.BUBBLE);
-        enableSubmitButton();
       },
       () => {
-        enableSubmitButton();
         showAlert(ALERT_TYPE.ERROR, EVENT_FLOW.CAPTURE);
       },
-      getFormData(evt)
+      getFormData(evt),
+      enableSubmitButton
     );
   }
 };

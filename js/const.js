@@ -29,41 +29,37 @@ const UNIT = {
   NONE: '',
 };
 
-const EFFECT_CONFIGS = {
+const EFFECT_OPTIONS = {
   none: {
     filter: 'none',
     unit: UNIT.NONE,
-    options: { min: 0, max: 100, step: 1, start: 100 }
+    options: { range: { min: 0, max: 100 }, step: 1, start: 100 }
   },
   chrome: {
     filter: 'grayscale',
     unit: UNIT.NONE,
-    options: { min: 0, max: 1, step: 0.1, start: 1 }
+    options: { range: { min: 0, max: 1 }, step: 0.1, start: 1 }
   },
   sepia: {
     filter: 'sepia',
     unit: UNIT.NONE,
-    options: { min: 0, max: 1, step: 0.1, start: 1 }
+    options: { range: { min: 0, max: 1 }, step: 0.1, start: 1 }
   },
   marvin: {
     filter: 'invert',
     unit: UNIT.PERCENT,
-    options: { min: 0, max: 100, step: 1, start: 100 }
+    options: { range: { min: 0, max: 100 }, step: 1, start: 100 }
   },
   phobos: {
     filter: 'blur',
     unit: UNIT.PIXEL,
-    options: { min: 0, max: 3, step: 0.1, start: 3 }
+    options: { range: { min: 0, max: 3 }, step: 0.1, start: 3 }
   },
   heat: {
     filter: 'brightness',
     unit: UNIT.NONE,
-    options: { min: 1, max: 3, step: 0.1, start: 3 }
+    options: { range: { min: 1, max: 3 }, step: 0.1, start: 3 }
   }
-};
-
-const RENDER_POSITION = {
-  BEFOREEND: 'beforeend',
 };
 
 const ALERT_TYPE = {
@@ -86,14 +82,13 @@ const SUBMIT_BUTTON_TEXT = {
 export {
   EFFECT_TYPE,
   UNIT,
-  EFFECT_CONFIGS,
+  EFFECT_OPTIONS,
   VALIDATOR_MODE,
   VALIDATOR_PRIORITY,
   VALIDATOR_HALT_BEHAVIOR,
   MAX_COMMENT_LENGTH,
   MAX_HASHTAGS,
   HASHTAG_PATTERN,
-  RENDER_POSITION,
   ALERT_SHOW_TIME,
   ALERT_TYPE,
   EVENT_FLOW,

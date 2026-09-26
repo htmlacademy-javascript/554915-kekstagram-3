@@ -1,21 +1,16 @@
-import { EFFECT_TYPE, EFFECT_CONFIGS } from './const';
+import { EFFECT_TYPE, EFFECT_OPTIONS } from './const';
 
 const effectsContainer = document.querySelector('.img-upload__wrapper');
 const sliderContainer = effectsContainer.querySelector('.img-upload__effect-level');
-const sliderElement = sliderContainer.querySelector('.effect-level__slider');
+const sliderControl = sliderContainer.querySelector('.effect-level__slider');
 const sliderInput = sliderContainer.querySelector('.effect-level__value');
 const effectsList = effectsContainer.querySelector('.effects__list');
 const previewImage = effectsContainer.querySelector('.img-upload__preview img');
 
 let currentEffect = EFFECT_TYPE.NONE;
 
-const options = {
-  range: {
-    min: 0,
-    max: 100,
-  },
-  start: 100,
-  step: 1,
+const effectOptions = {
+  ...EFFECT_OPTIONS[currentEffect].options,
   connect: 'lower',
   format: {
     to: (value) => Number.isInteger(value) ? value.toFixed(0) : value.toFixed(1),
@@ -23,22 +18,21 @@ const options = {
   }
 };
 
-const getSliderValue = () => sliderElement.noUiSlider.get();
-const updateInputValue = (value) => (sliderInput.value = value);
-const updatePreviewImageStyles = (value) => (previewImage.style.filter = value);
+const getSliderValue = () => sliderControl.noUiSlider.get();
+
+const updateInputValue = (value) => {
+  sliderInput.value = value;
+};
+
+const updatePreviewImageStyles = (value) => {
+  previewImage.style.filter = value;
+};
 
 const showSliderContainer = () => sliderContainer.classList.remove('hidden');
 const hideSliderContainer = () => sliderContainer.classList.add('hidden');
 
 const updateSliderOptions = (config) => {
-  sliderElement.noUiSlider.updateOptions({
-    range: {
-      min: config.options.min,
-      max: config.options.max,
-    },
-    step: config.options.step,
-    start: config.options.start,
-  });
+  sliderControl.noUiSlider.updateOptions(config.options);
 };
 
 const effectsListChangeHandler = (evt) => {
@@ -50,7 +44,7 @@ const effectsListChangeHandler = (evt) => {
 
   currentEffect = effectButton.value;
 
-  const config = EFFECT_CONFIGS[currentEffect];
+  const config = EFFECT_OPTIONS[currentEffect];
 
   if (currentEffect === EFFECT_TYPE.NONE) {
     hideSliderContainer();
@@ -65,7 +59,7 @@ const resetEffects = () => {
   hideSliderContainer();
   currentEffect = EFFECT_TYPE.NONE;
   updatePreviewImageStyles(EFFECT_TYPE.NONE);
-  sliderElement.noUiSlider.destroy();
+  sliderControl.noUiSlider.destroy();
   effectsList.querySelector('#effect-none').checked = true;
   effectsList.removeEventListener('change', effectsListChangeHandler);
 };
@@ -73,13 +67,13 @@ const resetEffects = () => {
 const initEffects = () => {
   hideSliderContainer();
 
-  noUiSlider.create(sliderElement, options);
+  noUiSlider.create(sliderControl, effectOptions);
 
-  sliderElement.noUiSlider.on('update', () => {
+  sliderControl.noUiSlider.on('update', () => {
     const sliderValue = getSliderValue();
     updateInputValue(sliderValue);
 
-    const { filter, unit } = EFFECT_CONFIGS[currentEffect];
+    const { filter, unit } = EFFECT_OPTIONS[currentEffect];
 
     if (currentEffect === EFFECT_TYPE.NONE) {
       updatePreviewImageStyles(EFFECT_TYPE.NONE);

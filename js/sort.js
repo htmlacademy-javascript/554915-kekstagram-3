@@ -6,6 +6,7 @@ const RERENDER_DELAY = 500;
 
 const sort = document.querySelector('.img-filters');
 const sortForm = sort.querySelector('.img-filters__form');
+let activeButton = sortForm.querySelector('.img-filters__button--active');
 
 const compareComments = (photoA, photoB) => photoB.comments.length - photoA.comments.length;
 const shufflePhotos = () => Math.random() - 0.5;
@@ -24,8 +25,15 @@ const debouncedRender = debounce((photos) => {
 const isButtonClicked = (element) => element.closest('.img-filters__button');
 const isActiveButton = (element) => element.classList.contains('img-filters__button--active');
 
-const resetActiveButton = () => sortForm.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
-const setActiveButton = (element) => element.classList.add('img-filters__button--active');
+const resetActiveButton = () => {
+  activeButton.classList.remove('img-filters__button--active');
+  activeButton = null;
+};
+
+const setActiveButton = (element) => {
+  activeButton = element;
+  activeButton.classList.add('img-filters__button--active');
+};
 
 const initSort = (photos) => {
   sort.classList.remove('img-filters--inactive');
@@ -40,7 +48,7 @@ const initSort = (photos) => {
     resetActiveButton();
     setActiveButton(target);
 
-    const sortType = evt.target.id;
+    const sortType = target.id;
     const filteredPhotos = sortTypeToFunction[sortType](photos);
 
     debouncedRender(filteredPhotos);

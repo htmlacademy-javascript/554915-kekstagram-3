@@ -1,4 +1,3 @@
-import { RENDER_POSITION } from './const';
 import { isEscKeydown } from './util';
 
 const COMMENTS_COUNT_PER_STEP = 5;
@@ -19,7 +18,9 @@ let renderedCommentsCount = 0;
 
 let slicedComments = null;
 
-const setComments = (comments) => (slicedComments = comments.slice());
+const setComments = (comments) => {
+  slicedComments = comments.slice();
+};
 
 const isShowLoadMoreButton = () => slicedComments.length > COMMENTS_COUNT_PER_STEP;
 const isHideLoadMoreButton = () => renderedCommentsCount >= slicedComments.length;
@@ -28,34 +29,59 @@ const hideLoadMoreButton = () => loadMoreButton.classList.add('hidden');
 const showLoadMoreButton = () => loadMoreButton.classList.remove('hidden');
 
 const getCommentsCount = () => slicedComments.length;
-const updateShownCommentsCount = (count) => (commentsCountShown.textContent = count);
 
-const getCommentTemplate = ({avatar, message, name}) => (
-  `<li class="social__comment">
-    <img
-      class="social__picture"
-      src="${avatar}"
-      alt="${name}"
-      width="35" height="35">
-    <p class="social__text">${message}</p>
-  </li>`
-);
-
-const renderComments = (from, to) => {
-  const commentItems =
-    slicedComments
-      .slice(from, to)
-      .map((comment) => getCommentTemplate(comment))
-      .join('');
-
-  commentsList.insertAdjacentHTML(RENDER_POSITION.BEFOREEND, commentItems);
+const updateShownCommentsCount = (count) => {
+  commentsCountShown.textContent = count;
 };
 
-const clearCommentsList = () => (commentsList.innerHTML = '');
+const createElement = (tagName, className, text) => {
+  const element = document.createElement(tagName);
+  element.classList.add(className);
+
+  if (text) {
+    element.textContent = text;
+  }
+
+  return element;
+};
+
+const createComment = ({ avatar, message, name }) => {
+  const comment = createElement('li', 'social__comment');
+
+  const image = createElement('img', 'social__picture');
+  image.src = avatar;
+  image.alt = name;
+  image.width = 35;
+  image.height = 35;
+
+  const text = createElement('p', 'social__text', message);
+
+  comment.append(image, text);
+
+  return comment;
+};
+
+const renderComments = (from, to) => {
+  const commentItems = slicedComments
+    .slice(from, to)
+    .map((comment) => createComment(comment));
+
+  commentsList.append(...commentItems);
+};
+
+const clearCommentsList = () => {
+  commentsList.innerHTML = '';
+};
 
 const getNextRenderedCommentsCount = () => Math.min(slicedComments.length, renderedCommentsCount + COMMENTS_COUNT_PER_STEP);
-const resetRenderedCommentsCount = () => (renderedCommentsCount = 0);
-const updateRenderedCommentsCount = () => (renderedCommentsCount = getNextRenderedCommentsCount());
+
+const resetRenderedCommentsCount = () => {
+  renderedCommentsCount = 0;
+};
+
+const updateRenderedCommentsCount = () => {
+  renderedCommentsCount = getNextRenderedCommentsCount();
+};
 
 const loadMoreButtonClickHandler = () => {
   const nextCommentsCount = getNextRenderedCommentsCount();

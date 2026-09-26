@@ -30,10 +30,11 @@ const getData = (onSuccess, onError) => {
     .catch(onError);
 };
 
-const sendData = (onSuccess, onError, body) => {
+const sendData = (onSuccess, onError, body, onFinally) => {
   load(Route.SEND_DATA, Method.POST, body)
     .then(onSuccess)
-    .catch(onError);
+    .catch(onError)
+    .finally(onFinally);
 };
 
 export {getData, sendData};

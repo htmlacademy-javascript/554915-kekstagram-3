@@ -13,10 +13,15 @@ const scaleImage = scaleContainer.querySelector('.img-upload__preview img');
 
 let currentScale = SCALE_PARAMS.DEFAULT;
 
-const normalizeScale = (value) => value / 100;
+const normalizeScale = (value) => value / SCALE_PARAMS.MAX;
 
-const updateInputScale = (scale) => (scaleInput.value = `${scale}%`);
-const updateImageScale = (scale) => (scaleImage.setAttribute('style', `transform: scale(${normalizeScale(scale)})`));
+const updateInputScale = (scale) => {
+  scaleInput.value = `${scale}%`;
+};
+
+const updateImageScale = (scale) => {
+  scaleImage.style.transform = `scale(${normalizeScale(scale)})`;
+};
 
 const scaleMinusButtonClickHandler = () => {
   if (currentScale > SCALE_PARAMS.MIN) {
